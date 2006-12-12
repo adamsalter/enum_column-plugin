@@ -22,6 +22,7 @@ module ActiveRecordEnumerations
     def initialize(name, default, sql_type = nil, null = true, values = nil)
       super(name, default, sql_type, null)
       @values = values
+      @limit = values if type == :enum
     end
 
     # The class for enum is Symbol.

@@ -24,7 +24,7 @@ module ActiveRecord
       def initialize(name, default, sql_type = nil, null = true)
         if sql_type =~ /^enum/i
           values = sql_type.sub(/^enum\('([^)]+)'\)/i, '\1').split("','").map { |v| v.intern }
-          default = default.intern if default
+          default = default.intern if default and !default.empty?
         end
         super(name, default, sql_type, null, values)
       end

@@ -92,4 +92,124 @@ class EnumerationsTest < Test::Unit::TestCase
     body = EnumController.process(request, response).body
     assert_equal '<label>low: <input id="test_severity_low" name="test[severity]" type="radio" value="low" /></label><label>medium: <input checked="checked" id="test_severity_medium" name="test[severity]" type="radio" value="medium" /></label><label>high: <input id="test_severity_high" name="test[severity]" type="radio" value="high" /></label><label>critical: <input id="test_severity_critical" name="test[severity]" type="radio" value="critical" /></label>', body
   end
+
+
+  # Basic tests
+  def test_create_basic_default
+    assert (object = BasicEnum.create)
+    assert_nil object.value,
+      "Enum columns without explicit default, default to null if allowed"
+    assert !object.new_record?
+  end
+
+  def test_create_basic_good
+    assert (object = BasicEnum.create(:value => :good))
+    assert_equal :good, object.value
+    assert !object.new_record?
+    assert (object = BasicEnum.create(:value => :working))
+    assert_equal :working, object.value
+    assert !object.new_record?
+  end
+
+  def test_create_basic_null
+    assert (object = BasicEnum.create(:value => nil))
+    assert_nil object.value
+    assert !object.new_record?
+  end
+
+  def test_create_basic_bad
+    assert (object = BasicEnum.create(:value => :bad))
+    assert object.new_record?
+  end
+
+  # Basic w/ Default
+
+  ######################################################################
+
+  def test_create_basic_wd_default
+    assert (object = BasicDefaultEnum.create)
+    assert_equal :working, object.value, "Explicit default ignored columns"
+    assert !object.new_record?
+  end
+
+  def test_create_basic_wd_good
+    assert (object = BasicDefaultEnum.create(:value => :good))
+    assert_equal :good, object.value
+    assert !object.new_record?
+    assert (object = BasicDefaultEnum.create(:value => :working))
+    assert_equal :working, object.value
+    assert !object.new_record?
+  end
+
+  def test_create_basic_wd_null
+    assert (object = BasicDefaultEnum.create(:value => nil))
+    assert_nil object.value
+    assert !object.new_record?
+  end
+
+  def test_create_basic_wd_bad
+    assert (object = BasicDefaultEnum.create(:value => :bad))
+    assert object.new_record?
+  end
+
+
+
+  # Nonnull
+
+  ######################################################################
+
+  def test_create_nonnull_default
+    assert (object = NonnullEnum.create)
+#    assert_equal :good, object.value,
+#      "Enum columns without explicit default, default to first value if null not allowed"
+    assert object.new_record?
+  end
+
+  def test_create_nonnull_good
+    assert (object = NonnullEnum.create(:value => :good))
+    assert_equal :good, object.value
+    assert !object.new_record?
+    assert (object = NonnullEnum.create(:value => :working))
+    assert_equal :working, object.value
+    assert !object.new_record?
+  end
+
+  def test_create_nonnull_null
+    assert (object = NonnullEnum.create(:value => nil))
+    assert object.new_record?
+  end
+
+  def test_create_nonnull_bad
+    assert (object = NonnullEnum.create(:value => :bad))
+    assert object.new_record?
+  end
+
+  # Nonnull w/ Default
+
+  ######################################################################
+
+  def test_create_nonnull_wd_default
+    assert (object = NonnullDefaultEnum.create)
+    assert_equal :working, object.value
+    assert !object.new_record?
+  end
+
+  def test_create_nonnull_wd_good
+    assert (object = NonnullDefaultEnum.create(:value => :good))
+    assert_equal :good, object.value
+    assert !object.new_record?
+    assert (object = NonnullDefaultEnum.create(:value => :working))
+    assert_equal :working, object.value
+    assert !object.new_record?
+  end
+
+  def test_create_nonnull_wd_null
+    assert (object = NonnullDefaultEnum.create(:value => nil))
+    assert object.new_record?
+  end
+
+  def test_create_nonnull_wd_bad
+    assert (object = NonnullDefaultEnum.create(:value => :bad))
+    assert object.new_record?
+  end
 end

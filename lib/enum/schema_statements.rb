@@ -11,9 +11,10 @@ module ActiveRecord
       #
       # will generate enum('a', 'b', 'c') for :limit => [:a, :b, :c]
       def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
-        native = native_database_types[type]
-        column_type_sql = native[:name]
         if type == :enum
+          native = native_database_types[type]
+          column_type_sql = native[:name]
+          
           column_type_sql << "(#{limit.map { |v| quote(v) }.join(',')})"
           column_type_sql          
         else

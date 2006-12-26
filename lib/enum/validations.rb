@@ -18,14 +18,14 @@ module ActiveRecord
           # Test various known types.
           case col.type
           when :enum
-            validates_inclusion_of name, :in => col.values, :allow_nil => col.null
+            validates_inclusion_of name, :in => col.values, :allow_nil => true
             
           when :integer, :float
-            validates_numericality_of name, :allow_nil => col.null
+            validates_numericality_of name, :allow_nil => true
             
           when :string
             if col.limit
-              validates_length_of name, :maximum => col.limit, :allow_nil => col.null
+              validates_length_of name, :maximum => col.limit, :allow_nil => true
             end
           end
         end

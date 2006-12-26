@@ -67,6 +67,7 @@ module ActionView
         values.each do |enum|
           opts = template.dup
           opts['checked'] = 'checked' if v and v == enum
+          opts['id'] = "#{opts['id']}_#{enum}"
           tag_text << "<label>#{enum}: "
           tag_text << to_radio_button_tag(enum, opts)
           tag_text << "</label>"

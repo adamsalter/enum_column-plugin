@@ -212,4 +212,9 @@ class EnumerationsTest < Test::Unit::TestCase
     assert (object = NonnullDefaultEnum.create(:value => :bad))
     assert object.new_record?
   end
+
+  def test_quoting
+    value = ActiveRecord::Base.send(:sanitize_sql, ["value = ? ", :"'" ] )
+    assert_equal "value = '''' ", value
+  end
 end

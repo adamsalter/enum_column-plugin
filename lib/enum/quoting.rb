@@ -9,7 +9,7 @@ module ActiveRecord
         if !value.is_a? Symbol
           __quote_enum(value, column)
         else
-          "'#{value.to_s}'"          
+          ActiveRecord::Base.send(:quote_bound_value, value.to_s)
         end
       end
     end

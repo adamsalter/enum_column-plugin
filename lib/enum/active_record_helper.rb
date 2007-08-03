@@ -5,12 +5,12 @@ module ActionView
       # helper to create a select drop down list for the enumerated values. This
       # is the default input tag.
       def enum_select(object_name, method, options = {})
-        InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_enum_select_tag("enum", options)
+        InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_enum_select_tag(options)
       end
 
       # Creates a set of radio buttons for all the enumerated values.
       def enum_radio(object_name, method, options = {})
-        InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_enum_radio_tag("enum", options)        
+        InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_enum_radio_tag(options)        
       end
     end
     
@@ -29,7 +29,7 @@ module ActionView
 
       # Create a select tag and one option for each of the
       # enumeration values.
-      def to_enum_select_tag(values, options = {})
+      def to_enum_select_tag(options = {})
         # Remove when we no longer support 1.1.
         begin
           v = value(object)
@@ -51,7 +51,7 @@ module ActionView
       end
 
       # Creates a set of radio buttons and labels.
-      def to_enum_radio_tag(values, options = {})
+      def to_enum_radio_tag(options = {})
         # Remove when we no longer support 1.1.
         begin
           v = value(object)

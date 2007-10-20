@@ -6,7 +6,7 @@ module ActiveRecordEnumerations
     # Add the values accessor to the column class.
     def self.included(klass)
       klass.module_eval <<-EOE
-        attr_reader :values
+        def values; @limit; end
       EOE
     end
 
@@ -21,7 +21,6 @@ module ActiveRecordEnumerations
     # The new constructor with a values argument.
     def initialize(name, default, sql_type = nil, null = true, values = nil)
       super(name, default, sql_type, null)
-      @values = values
       @limit = values if type == :enum
     end
 

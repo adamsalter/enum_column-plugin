@@ -1,8 +1,6 @@
-
 module ActiveRecord
   module ConnectionAdapters
     class PostgreSQLAdapter
-      alias __add_column_options_enum! add_column_options!
       alias __native_database_types_enum native_database_types
       
       def native_database_types #:nodoc
@@ -43,10 +41,10 @@ module ActiveRecord
 
       def add_column_options!(sql, options)
         unless sql =~ /\(32\)\('[^']+'/
-          __add_column_options_enum!(sql, options)
+          super(sql, options)
         else
           sql.gsub!(/("[^"]+")([^3]+32\))(.+)/, '\1\2 CHECK(\1 in \3)')
-          __add_column_options_enum!(sql, options)
+          super(sql, options)
         end
       end
     end

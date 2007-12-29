@@ -13,6 +13,16 @@ module ActionView
         InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_enum_radio_tag(options)        
       end
     end
+
+    class FormBuilder
+      def enum_select(method, options = { })
+        @template.enum_select(@object_name, method, options)
+      end
+
+      def enum_radio(method, options = { })
+        @template.enum_radio(@object_name, method, options)
+      end
+    end
     
     class InstanceTag #:nodoc:
       alias __to_tag_enum to_tag
@@ -42,6 +52,9 @@ module ActionView
         tag_text << ">"
         values = enum_values
         raise ArgumentError, "No values for enum select tag" unless values
+        if options[:include_blank]
+          tag_text << "<option value=\"\"></option>\n"
+        end
         values.each do |enum|
           tag_text << "<option value=\"#{enum}\""
           tag_text << ' selected="selected"' if v and v == enum

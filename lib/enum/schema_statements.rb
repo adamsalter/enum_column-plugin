@@ -13,7 +13,7 @@ module ActiveRecord
       def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
         if type == :enum
           native = native_database_types[type]
-          column_type_sql = native[:name]
+          column_type_sql = native[:name] || 'enum'
           
           column_type_sql << "(#{limit.map { |v| quote(v) }.join(',')})"
           column_type_sql          
